@@ -106,12 +106,13 @@ namespace GFrame
             }
         }
 
-        public bool Send(int key, params object[] param)
+        public bool Send<T>(T key, params object[] param) where T : IConvertible
         {
+            int kv = key.ToInt32(null);
             ListenerWarp warp;
-            if (m_ListenerMap.TryGetValue(key, out warp))
+            if (m_ListenerMap.TryGetValue(kv, out warp))
             {
-                return warp.Send(key, param);
+                return warp.Send(kv, param);
             }
             return false;
         }

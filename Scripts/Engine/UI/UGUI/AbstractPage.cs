@@ -9,6 +9,12 @@ namespace GFrame
     {
         [SerializeField] protected AbstractPage m_ParentPage;
 
+        protected Canvas m_Canvas;
+        public Canvas Canvas
+        {
+            get { return m_Canvas; }
+        }
+
         private bool m_HasInitUI = false;
         private bool m_HasOpen = false;
         private int m_PanelID = -1;
@@ -19,9 +25,12 @@ namespace GFrame
         public int UIID
         {
             get { return m_UIID; }
-            set { m_UIID = value; }
+            set
+            {
+                m_UIID = value;
+                m_PanelID = value;
+            }
         }
-
 
 
         public int GetParentPanelID()
@@ -61,6 +70,7 @@ namespace GFrame
             if (!m_HasInitUI)
             {
                 m_HasInitUI = true;
+                m_Canvas = transform.AddMissingComponent<Canvas>();
                 RegisterParentPanelEvent();
                 OnUIInit();
             }
@@ -80,6 +90,7 @@ namespace GFrame
         private void RegisterParentPanelEvent()
         {
             int panelID = GetParentPanelID();
+            Debug.LogError("panelID" + panelID);
             if (panelID > 0)
             {
                 UIMgr.S.uiEventSystem.Register(panelID, OnParentPanelEvent);
@@ -97,6 +108,7 @@ namespace GFrame
 
         protected void OnParentPanelEvent(int key, params object[] args)
         {
+            Debug.LogError("OnParentPanelEvent");
             if (args == null || args.Length <= 0)
             {
                 return;
@@ -122,6 +134,8 @@ namespace GFrame
                 default:
                     break;
             }
+
+            OnViewEvent(e, args);
         }
 
         private void ClosePage()

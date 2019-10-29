@@ -51,6 +51,11 @@ namespace GFrame
             return res.asset;
         }
 
+        public void LoadSync()
+        {
+
+        }
+
         public void LoadAsync()//异步加载资源
         {
             //DoLoadAsync();

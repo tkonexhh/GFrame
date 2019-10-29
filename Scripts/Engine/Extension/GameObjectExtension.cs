@@ -13,10 +13,13 @@ namespace GFrame
             GameObject.Destroy(obj);
         }
 
-        public static GameObject SetActive(this GameObject obj, bool enable)
+        public static void SetEnable(this GameObject obj, bool enable)
         {
+            if (obj.activeSelf == enable)
+            {
+                return;
+            }
             obj.SetActive(enable);
-            return obj;
         }
 
         public static void SetX(this GameObject obj, float x)

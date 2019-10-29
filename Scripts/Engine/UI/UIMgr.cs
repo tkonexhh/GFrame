@@ -80,9 +80,19 @@ namespace GFrame
             if (m_Loader == null)
                 m_Loader = ResLoader.Allocate("UIMGR");
 
+
+            // m_Loader.Add2Load(uIData.fullPath, (state, res) =>
+            // {
+            //     if (!state)
+            //     {
+            //         return;
+            //     }
+            // });
+            // m_Loader.LoadSync();
             GameObject prefab = m_Loader.LoadSync(uIData.fullPath) as GameObject;
             GameObject obj = GameObject.Instantiate(prefab);
             var panel = obj.GetComponent<AbstractPanel>();
+            panel.UIID = uIData.UIID;
             if (panel == null) return;
 
             obj.transform.SetParent(uiRoot.panelRoot);
@@ -92,6 +102,16 @@ namespace GFrame
             rect.SetAnchor(AnchorPresets.StretchAll);
             rect.SetSize(new Vector2(uiRoot.rootCanvas.pixelRect.width, uiRoot.rootCanvas.pixelRect.height));
 
+        }
+
+        public void ClosePanel(AbstractPanel panel)
+        {
+            if (panel == null)
+            {
+                return;
+            }
+
+            Destroy(panel.gameObject);
         }
 
         ResLoader m_Loader;
